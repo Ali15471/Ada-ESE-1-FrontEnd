@@ -71,9 +71,9 @@ export default function PostDetail() {
     <section id="post-detail">
         <div className="container">
             <h2>{post.title}</h2>
-            <p>By {post.author.username} on {new Date(post.created_at).toLocaleDateString()}</p>
+            <p>By {post.author} on {new Date(post.created_at).toLocaleDateString()}</p>
             <p>{post.content}</p>
-            {user?.id === post.author.id && (
+            {user?.username === post.author_username && (
                 <button onClick={handlePostDelete} className="delete-btn">Delete Post</button>
             )}
 
@@ -83,8 +83,8 @@ export default function PostDetail() {
                 {comments.map(comment => (
                     <li key={comment.id}>
                         <p>{comment.content}</p>
-                        <p>By {comment.author.username} on {new Date(comment.created_at).toLocaleDateString()}</p>
-                        {user?.id === comment.author.id && (
+                        <p>By {comment.author} on {new Date(comment.created_at).toLocaleDateString()}</p>
+                        {user?.username === comment.author_username && (
                             <button onClick={() => handleCommentDelete(comment.id)} className="delete-btn">Delete Comment</button>
                         )}
                     </li>

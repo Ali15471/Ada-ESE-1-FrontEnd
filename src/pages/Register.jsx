@@ -1,4 +1,4 @@
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -34,7 +34,7 @@ export default function Register() {
                         id="username"
                         type="text"
                         placeholder="Username"
-                        autocomplete="username"
+                        autoComplete="username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
@@ -44,7 +44,7 @@ export default function Register() {
                         id="email"
                         type="email"
                         placeholder="Email"
-                        autocomplete="email"
+                        autoComplete="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -54,7 +54,7 @@ export default function Register() {
                         id="password"
                         type="password"
                         placeholder="Password"
-                        autocomplete="new-password"
+                        autoComplete="new-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required

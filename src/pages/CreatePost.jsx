@@ -15,7 +15,7 @@ export default function CreatePost() {
         setLoading(true);
         try {
             await api.post("/api/posts/", { title, content, status });
-            navigate("/posts");
+            navigate("/");
         } catch (err) {
             setError("Failed to create post. Please try again.");
         } finally {

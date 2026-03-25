@@ -11,8 +11,8 @@ import PostDetail from './pages/PostDetail.jsx';
 import CreatePost from './pages/CreatePost.jsx';
 
 function ProtectedRoute({ children }) {
-  const { authUser } = useAuth();
-  return authUser ? children : <Navigate to="/login" />;
+  const { user } = useAuth();
+  return user ? children : <Navigate to="/login" />;
 }
 
 export default function App() {
