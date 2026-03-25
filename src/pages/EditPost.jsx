@@ -1,32 +1,50 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../api/axios.js";
 
-export default function CreatePost() {
+export default function EditPost() {
+    const { id } = useParams();
     const navigate = useNavigate();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchPost() {
+            try {
+                const response = await api.get(`/api/posts/${id}/`);
+                setTitle(response.data.title);
+                setContent(response.data.content);
+            } catch (err) {
+                setError("Failed to load post. Please try again.");
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchPost();
+    }, [id]);
 
     async function handleSubmit(postStatus) {
         setLoading(true);
         try {
-            await api.post("/api/posts/", { title, content, status: postStatus });
-            navigate("/");
+            await api.patch(`/api/posts/${id}/`, { title, content, status: postStatus });
+            navigate(`/posts/${id}`);
         } catch (err) {
-            setError("Failed to create post. Please try again.");
+            setError("Failed to update post. Please try again.");
         } finally {
             setLoading(false);
         }
     }
 
+    if (loading) return <p>Loading post...</p>;
+
     return (
-        <section id="create-post">
+        <section id="edit-post">
             <div className="container">
-                <h2>Create New Post</h2>
+                <h2>Edit Post</h2>
                 {error && <p role="alert">{error}</p>}
-                <form onSubmit={handleSubmit}>
+                <form>
                     <div>
                         <label htmlFor="title">Title:</label>
                         <input
@@ -47,7 +65,7 @@ export default function CreatePost() {
                         ></textarea>
                     </div>
                     <button type="button" onClick={() => handleSubmit("PUBLISHED")} disabled={loading}>
-                        {loading ? "Creating..." : "Create Post"}
+                        {loading ? "Publishing..." : "Publish Changes"}
                     </button>
                     <button type="button" onClick={() => handleSubmit("DRAFT")} disabled={loading}>
                         {loading ? "Saving..." : "Save as Draft"}

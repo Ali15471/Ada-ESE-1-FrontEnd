@@ -74,8 +74,12 @@ export default function PostDetail() {
             <p>By {post.author_username} on {new Date(post.created_at).toLocaleDateString()}</p>
             <p>{post.content}</p>
             {user?.username === post.author_username && (
-                <button onClick={handlePostDelete} className="delete-btn">Delete Post</button>
+                <>
+                    <button onClick={handlePostDelete} className="delete-btn">Delete Post</button>
+                    <Link to={`/posts/${id}/edit`}>Edit Post</Link>
+                </>
             )}
+            <button type="button" onClick={() => navigate(-1)}>Go Back</button>
 
             <hr />
             <h3>Comments</h3>

@@ -9,6 +9,7 @@ import PasswordResetRequest from './pages/PasswordResetRequest.jsx';
 import PasswordResetConfirm from './pages/PasswordReset.jsx';
 import PostDetail from './pages/PostDetail.jsx';
 import CreatePost from './pages/CreatePost.jsx';
+import EditPost from './pages/EditPost.jsx';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -35,19 +36,27 @@ export default function App() {
           <ProtectedRoute>
             <Profile />
           </ProtectedRoute>
+          
+        } />
+        <Route path="/posts/:id/edit" element={
+          <ProtectedRoute>
+            <EditPost />
+          </ProtectedRoute>
         } />
       </Routes>
 
-      <section id="socials">
-        <div className="container">
-          <h2>Connect with us on social media!</h2>
-          <p>Follow us for the latest updates and news.</p>
-          <ul className="social-links">
-            <li><a href="https://github.com/Ali15471" target="_blank">GitHub</a></li>
-            <li><a href="https://instagram.com/ali.raza20405" target="_blank">Instagram</a></li>
-          </ul>
-        </div>
-      </section>
+      <footer>
+        <section id="socials">
+          <div className="container">
+            <h2>Connect with us on social media!</h2>
+            <p>Follow us for the latest updates and news.</p>
+            <ul className="social-links">
+              <li><a href="https://github.com/Ali15471" target="_blank">GitHub</a></li>
+              <li><a href="https://instagram.com/ali.raza20405" target="_blank">Instagram</a></li>
+            </ul>
+          </div>
+        </section>
+      </footer> 
     </>
   );
 }
