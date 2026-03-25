@@ -36,6 +36,7 @@ export default function Login() {
             autoComplete="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
           <label htmlFor="password">Password</label>
           <input
@@ -45,6 +46,7 @@ export default function Login() {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <button type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
