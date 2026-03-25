@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { api } from "../api/axios.js";
+import api from "../api/axios.js";
 
 export default function Home() {
     const [posts, setPosts] = useState([]);
