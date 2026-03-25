@@ -11,7 +11,7 @@ export default function Home() {
         async function fetchPosts() {
             try {
                 const response = await api.get("/api/posts/");
-                setPosts(response.data);
+                setPosts(response.data.filter(p => p.status === "PUBLISHED"));
             } catch (err) {
                 setError("Failed to load posts. Please try again later.");
             } finally {
@@ -35,7 +35,7 @@ export default function Home() {
                         {posts.map(post => (
                             <li key={post.id}>
                                 <Link to={`/posts/${post.id}`}>{post.title}</Link>
-                                <p>By {post.author} · {new Date(post.created_at).toLocaleDateString()}</p>
+                                <p>By {post.author_username} · {new Date(post.created_at).toLocaleDateString()}</p>
                                 <p>{post.content.substring(0, 150)}{post.content.length > 150 ? "..." : ""}</p>
                             </li>
                         ))}

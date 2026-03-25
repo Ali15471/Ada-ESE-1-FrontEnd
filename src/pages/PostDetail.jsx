@@ -47,7 +47,7 @@ export default function PostDetail() {
         if (!window.confirm("Are you sure you want to delete this post?")) return;
         try {
             await api.delete(`/api/posts/${id}/`);
-            navigate("/posts");
+            navigate("/");
         } catch (err) {
             setError("Failed to delete post. Please try again.");
         }
@@ -56,7 +56,7 @@ export default function PostDetail() {
     async function handleCommentDelete(commentId) {
         if (!window.confirm("Are you sure you want to delete this comment?")) return;
         try {
-            await api.delete(`/api/comments/${commentId}/`);
+            await api.delete(`/api/posts/${id}/comments/${commentId}/`);
             setComments(comments.filter(comment => comment.id !== commentId));
         } catch (err) {
             setError("Failed to delete comment. Please try again.");
@@ -71,7 +71,7 @@ export default function PostDetail() {
     <section id="post-detail">
         <div className="container">
             <h2>{post.title}</h2>
-            <p>By {post.author} on {new Date(post.created_at).toLocaleDateString()}</p>
+            <p>By {post.author_username} on {new Date(post.created_at).toLocaleDateString()}</p>
             <p>{post.content}</p>
             {user?.username === post.author_username && (
                 <button onClick={handlePostDelete} className="delete-btn">Delete Post</button>
@@ -83,7 +83,7 @@ export default function PostDetail() {
                 {comments.map(comment => (
                     <li key={comment.id}>
                         <p>{comment.content}</p>
-                        <p>By {comment.author} on {new Date(comment.created_at).toLocaleDateString()}</p>
+                        <p>By {comment.author_username} on {new Date(comment.created_at).toLocaleDateString()}</p>
                         {user?.username === comment.author_username && (
                             <button onClick={() => handleCommentDelete(comment.id)} className="delete-btn">Delete Comment</button>
                         )}

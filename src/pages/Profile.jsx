@@ -24,7 +24,7 @@ export default function Profile() {
                 setDisplayName(profileRes.data.display_name);
                 setBio(profileRes.data.bio);
                 setProfilePicture(profileRes.data.profile_picture);
-                setDraftPosts(postsRes.data.filter(p => p.status === "draft"));
+                setDraftPosts(postsRes.data.filter(p => p.status === "DRAFT"));
             } catch (err) {
                 setError("Failed to load profile. Please try again later.");
             } finally {
