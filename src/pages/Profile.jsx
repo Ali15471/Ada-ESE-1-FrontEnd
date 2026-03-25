@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
 import api from "../api/axios.js";
 
 export default function Profile() {
     const [userInfo, setUserInfo] = useState(null);
     const [draftPosts, setDraftPosts] = useState([]);
-    const [displayName, setDisplayName] = useState("");
+    const [username, setUsername] = useState("");
     const [bio, setBio] = useState("");
     const [profilePicture, setProfilePicture] = useState(null);
     const [successMessage, setSuccessMessage] = useState("");
     const [saving, setSaving] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { updateUser } = useAuth();
 
     useEffect(() => {
         async function fetchProfile() {
@@ -21,7 +23,7 @@ export default function Profile() {
                     api.get("/api/posts/")
                 ]);
                 setUserInfo(profileRes.data);
-                setDisplayName(profileRes.data.display_name);
+                setUsername(profileRes.data.username);
                 setBio(profileRes.data.bio);
                 setProfilePicture(profileRes.data.profile_picture);
                 setDraftPosts(postsRes.data.filter(p => p.status === "DRAFT"));
@@ -39,7 +41,7 @@ export default function Profile() {
         setSaving(true);
         try {
             const formData = new FormData();
-            formData.append("display_name", displayName);
+            formData.append("username", username);
             formData.append("bio", bio);
             if (profilePicture instanceof File) {
                 formData.append("profile_picture", profilePicture);
@@ -47,6 +49,8 @@ export default function Profile() {
             await api.patch("/api/profile/", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
+            localStorage.setItem('username', username);
+            updateUser({ username });
             setSuccessMessage("Profile updated successfully!");
         } catch (err) {
             setError("Failed to update profile. Please try again.");
@@ -65,12 +69,12 @@ export default function Profile() {
                 {successMessage && <p role="alert">{successMessage}</p>}
                 <form onSubmit={handleSave}>
                     <div>
-                        <label htmlFor="displayName">Display Name:</label>
+                        <label htmlFor="username">Username:</label>
                         <input
                             type="text"
-                            id="displayName"
-                            value={displayName}
-                            onChange={e => setDisplayName(e.target.value)}
+                            id="username"
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
                             required
                         />
                     </div>

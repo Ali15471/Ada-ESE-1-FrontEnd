@@ -13,13 +13,13 @@ export function AuthProvider ({ children }) {
     });
 
     async function login(username, password) {
-        const data = await api.post('/api/auth/login/', { username, password });
-        console.log("Login response:", data);
-        localStorage.setItem('token', data.data.access);
-        localStorage.setItem('refresh', data.data.refresh);
-        localStorage.setItem('username', username);
-        setUser({ username });
-    }
+    const data = await api.post('/api/auth/login/', { username, password });
+    localStorage.setItem('token', data.data.access);
+    localStorage.setItem('refresh', data.data.refresh);
+    const me = await api.get('/api/me/');
+    localStorage.setItem('username', me.data.username);
+    setUser({ username: me.data.username });
+}
 
     async function register(username, email, password) {
         await api.post('/api/auth/register/', { username, email, password });
@@ -32,8 +32,12 @@ export function AuthProvider ({ children }) {
         setUser(null);
     };
 
+    function updateUser(newData) {
+    setUser((prev) => ({ ...prev, ...newData }));
+    }
+
     return (
-        <AuthContext.Provider value={{ user, login, register, logout }}>
+        <AuthContext.Provider value={{ user, login, register, logout, updateUser }}>
             {children}
         </AuthContext.Provider>
     );
