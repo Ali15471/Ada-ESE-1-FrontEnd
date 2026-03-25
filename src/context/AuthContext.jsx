@@ -5,11 +5,11 @@ const AuthContext = createContext();
 
 export function AuthProvider ({ children }) {
     const [user, setUser] = useState(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            return {token}; 
-        }
-        return null;
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
+    if (token && username) 
+        return { token, username };
+    return null;
     });
 
     async function login(username, password) {
@@ -17,6 +17,7 @@ export function AuthProvider ({ children }) {
         console.log("Login response:", data);
         localStorage.setItem('token', data.data.access);
         localStorage.setItem('refresh', data.data.refresh);
+        localStorage.setItem('username', username);
         setUser({ username });
     }
 
@@ -27,6 +28,7 @@ export function AuthProvider ({ children }) {
     function logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('refresh');
+        localStorage.removeItem('username');
         setUser(null);
     };
 

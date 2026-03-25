@@ -22,8 +22,9 @@ export default function Navbar() {
       <Link to="/" onClick={() => handleNavClick("/")}>Home</Link>
       {user ? (
         <>
-        <Link to="/profile" onClick={() => handleNavClick("/profile")}>Profile</Link>
         <Link to="/create-post" onClick={() => handleNavClick("/create-post")}>Create Post</Link>
+        <Link to="/my-posts" onClick={() => handleNavClick("/my-posts")}>My Posts</Link>
+        <Link to="/profile" onClick={() => handleNavClick("/profile")}>Profile</Link>
         <button onClick={handleLogout}>Logout</button>
         </>
       ) : (

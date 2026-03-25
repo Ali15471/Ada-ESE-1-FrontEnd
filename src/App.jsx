@@ -10,6 +10,7 @@ import PasswordResetConfirm from './pages/PasswordReset.jsx';
 import PostDetail from './pages/PostDetail.jsx';
 import CreatePost from './pages/CreatePost.jsx';
 import EditPost from './pages/EditPost.jsx';
+import MyPosts from './pages/MyPosts.jsx';
 
 function ProtectedRoute({ children }) {
   const { user } = useAuth();
@@ -41,6 +42,11 @@ export default function App() {
         <Route path="/posts/:id/edit" element={
           <ProtectedRoute>
             <EditPost />
+          </ProtectedRoute>
+        } />
+        <Route path="/my-posts" element={
+          <ProtectedRoute>
+            <MyPosts />
           </ProtectedRoute>
         } />
       </Routes>
