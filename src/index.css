@@ -228,6 +228,34 @@ select:focus {
   box-shadow: 0 0 0 2px var(--color-accent-bg);
 }
 
+/* Password field with toggle */
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-right: 3rem;
+  width: 100%;
+}
+
+.password-toggle {
+  position: absolute;
+  right: var(--space-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: var(--space-xs);
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: var(--color-accent);
+}
+
 /* Buttons */
 button {
   font: inherit;

@@ -9,6 +9,7 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     async function handleSubmit(e) {
@@ -57,13 +58,16 @@ export default function Register() {
                     <label htmlFor="password">Password</label>
                     <input
                         id="password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         placeholder="Password"
                         autoComplete="new-password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
+                    <button type="button" onClick={() => setShowPassword((prev) => !prev)}>
+                        {showPassword ? "Hide" : "Show"} Password
+                    </button>
                     <button type="submit" disabled={loading}>
                         {loading ? "Registering..." : "Register"}
                     </button>

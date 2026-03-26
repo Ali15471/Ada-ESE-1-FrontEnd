@@ -8,6 +8,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false); // Used to prevent double-submission
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -42,13 +43,16 @@ export default function Login() {
           <label htmlFor="password">Password</label>
           <input
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Password"
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          <button type="button" onClick={() => setShowPassword((prev) => !prev)}>
+            {showPassword ? "Hide" : "Show"} Password
+          </button>
           <button type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
