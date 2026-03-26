@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import api from "../api/axios.js";
@@ -29,11 +29,15 @@ export default function Profile() {
     const [username, setUsername] = useState("");
     const [bio, setBio] = useState("");
     const [profilePicture, setProfilePicture] = useState(null);
+    const [savedUsername, setSavedUsername] = useState("");
+    const [savedBio, setSavedBio] = useState("");
+    const [savedProfilePicture, setSavedProfilePicture] = useState(null);
     const [successMessage, setSuccessMessage] = useState("");
     const [saving, setSaving] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { updateUser } = useAuth();
+    const fileInputRef = useRef(null);
 
     useEffect(() => {
         async function fetchProfile() {
@@ -47,6 +51,9 @@ export default function Profile() {
                 setBio(profileRes.data.bio);
                 setProfilePicture(profileRes.data.profile_picture);
                 setDraftPosts(postsRes.data.filter(p => p.status === "DRAFT"));
+                setSavedUsername(profileRes.data.username);
+                setSavedBio(profileRes.data.bio);
+                setSavedProfilePicture(profileRes.data.profile_picture);
             } catch (err) {
                 setError("Failed to load profile. Please try again later.");
             } finally {
@@ -73,6 +80,9 @@ export default function Profile() {
             });
             const newPfpUrl = res.data.profile_picture;
             setProfilePicture(newPfpUrl); // To be replaced with url
+            setSavedUsername(username);
+            setSavedBio(bio);
+            setSavedProfilePicture(newPfpUrl);
             localStorage.setItem('profile_picture', newPfpUrl || '');
             localStorage.setItem('username', username);
             updateUser({ username, profile_picture: newPfpUrl });
@@ -82,6 +92,15 @@ export default function Profile() {
         } finally {
             setSaving(false);
         }
+    }
+
+    function handleCancel() {
+        setUsername(savedUsername);
+        setBio(savedBio);
+        setProfilePicture(savedProfilePicture);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        setSuccessMessage("Changes cancelled.");
+        setError(null);
     }
 
     if (loading) return <p>Loading profile...</p>;
@@ -127,6 +146,7 @@ export default function Profile() {
                         <input
                             type="file"
                             id="profilePicture"
+                            ref={fileInputRef}
                             accept="image/*"
                             onChange={async e => {
                             const file = e.target.files[0];
@@ -138,6 +158,9 @@ export default function Profile() {
                     </div>
                     <button type="submit" disabled={saving}>
                         {saving ? "Saving..." : "Save Changes"}
+                    </button>
+                    <button type="button" onClick={handleCancel} disabled={saving}>
+                        Cancel
                     </button>
                 </form>
 
