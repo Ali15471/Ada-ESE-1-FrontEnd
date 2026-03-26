@@ -1,0 +1,51 @@
+import {createContext, useState, useContext} from 'react';
+import api from '../api/axios';
+
+const AuthContext = createContext();
+
+export function AuthProvider ({ children }) {
+    const [user, setUser] = useState(() => {
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
+    const profile_picture = localStorage.getItem('profile_picture') || null;
+    if (token && username) 
+        return { token, username, profile_picture };
+    return null;
+    });
+
+    async function login(username, password) {
+    const data = await api.post('/api/auth/login/', { username, password });
+    localStorage.setItem('token', data.data.access);
+    localStorage.setItem('refresh', data.data.refresh);
+    const me = await api.get('/api/me/');
+    localStorage.setItem('username', me.data.username);
+    localStorage.setItem('profile_picture', me.data.profile_picture || '');
+    setUser({ username: me.data.username, profile_picture: me.data.profile_picture || null });
+}
+
+    async function register(username, email, password) {
+        await api.post('/api/auth/register/', { username, email, password });
+    }
+
+    function logout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refresh');
+        localStorage.removeItem('username');
+        localStorage.removeItem('profile_picture')
+        setUser(null);
+    };
+
+    function updateUser(newData) {
+    setUser((prev) => ({ ...prev, ...newData }));
+    }
+
+    return (
+        <AuthContext.Provider value={{ user, login, register, logout, updateUser }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+export function useAuth() {
+    return useContext(AuthContext);
+}
