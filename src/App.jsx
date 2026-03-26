@@ -21,12 +21,13 @@ export default function App() {
   return (
     <>
       <Navbar />
+      <main>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/password-reset-request" element={<PasswordResetRequest />} />
-        <Route path="/password-reset/:uidb64/:token" element={<PasswordResetConfirm />} />
+        <Route path="/reset-password/:uidb64/:token" element={<PasswordResetConfirm />} />
         <Route path="/posts/:id" element={<PostDetail />} />
         <Route path="/create-post" element={
           <ProtectedRoute>
@@ -50,6 +51,7 @@ export default function App() {
           </ProtectedRoute>
         } />
       </Routes>
+      </main>
 
       <footer>
         <section id="socials">
@@ -57,8 +59,8 @@ export default function App() {
             <h2>Connect with us on social media!</h2>
             <p>Follow us for the latest updates and news.</p>
             <ul className="social-links">
-              <li><a href="https://github.com/Ali15471" target="_blank">GitHub</a></li>
-              <li><a href="https://instagram.com/ali.raza20405" target="_blank">Instagram</a></li>
+              <a href="https://github.com/Ali15471" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://instagram.com/ali.raza20405" target="_blank" rel="noopener noreferrer">Instagram</a>
             </ul>
           </div>
         </section>

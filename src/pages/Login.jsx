@@ -17,7 +17,8 @@ export default function Login() {
       await login(username, password);
       navigate("/");
     } catch (err) {
-      setError("Invalid username or password");
+      const data = err.response?.data;
+      setError(data?.detail || "Invalid username or password.");
     } finally {
       setLoading(false);
     }
@@ -53,6 +54,7 @@ export default function Login() {
           </button>
         </form>
         <p>Don't have an account? <Link to="/register">Register here</Link></p>
+        <p>Forgot your password?<Link to="/password-reset-request">Reset password</Link></p>
         {error && <p role="alert">{error}</p>}
       </div>
     </section>

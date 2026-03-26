@@ -70,8 +70,9 @@ export default function PostDetail() {
     return (
     <section id="post-detail">
         <div className="container">
+            <button type="button" onClick={() => navigate(-1)}>Go Back</button>
             <h2>{post.title}</h2>
-            <p>By {post.author_username} on {new Date(post.created_at).toLocaleDateString()}</p>
+            <p>By {post.author_username} on {new Date(post.updated_at).toLocaleDateString()}</p>
             <p>{post.content}</p>
             {user?.username === post.author_username && (
                 <>
@@ -79,22 +80,9 @@ export default function PostDetail() {
                     <Link to={`/posts/${id}/edit`}>Edit Post</Link>
                 </>
             )}
-            <button type="button" onClick={() => navigate(-1)}>Go Back</button>
 
             <hr />
-            <h3>Comments</h3>
-            <ul>
-                {comments.map(comment => (
-                    <li key={comment.id}>
-                        <p>{comment.content}</p>
-                        <p>By {comment.author_username} on {new Date(comment.created_at).toLocaleDateString()}</p>
-                        {user?.username === comment.author_username && (
-                            <button onClick={() => handleCommentDelete(comment.id)} className="delete-btn">Delete Comment</button>
-                        )}
-                    </li>
-                ))}
-            </ul>
-
+            <h3>Comments ({comments.length})</h3>
             {user ? (
                 <form onSubmit={handleCommentSubmit}>
                     <textarea
@@ -108,6 +96,18 @@ export default function PostDetail() {
             ) : (
                 <p><Link to="/login">Log in</Link> to post a comment.</p>
             )}
+            <ul>
+                {comments.length === 0 && <p>No comments yet. Be the first!</p>}
+                {comments.map(comment => (
+                    <li key={comment.id}>
+                        <p>{comment.content}</p>
+                        <p>By {comment.author_username} on {new Date(comment.created_at).toLocaleDateString()}</p>
+                        {user?.username === comment.author_username && (
+                            <button onClick={() => handleCommentDelete(comment.id)} className="delete-btn">Delete Comment</button>
+                        )}
+                    </li>
+                ))}
+            </ul>
         </div>
     </section>
     );

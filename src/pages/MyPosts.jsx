@@ -40,6 +40,7 @@ export default function MyPosts() {
                         {posts.map(post => (
                             <li key={post.id}>
                                 <Link to={`/posts/${post.id}`}>{post.title}</Link>
+                                <p>Status: {post.status}</p>
                                 <p>By {post.author_username} · {new Date(post.created_at).toLocaleDateString()}</p>
                                 <p>{post.content.substring(0, 150)}{post.content.length > 150 ? "..." : ""}</p>
                             </li>

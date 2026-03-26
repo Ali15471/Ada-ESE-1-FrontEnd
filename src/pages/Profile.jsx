@@ -142,7 +142,7 @@ export default function Profile() {
                         ></textarea>
                     </div>
                     <div>
-                        <label htmlFor="profilePicture">Profile Picture:</label>
+                        <label htmlFor="profilePicture">Update Profile Picture:</label>
                         <input
                             type="file"
                             id="profilePicture"

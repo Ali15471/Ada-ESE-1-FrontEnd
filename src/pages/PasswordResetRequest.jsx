@@ -24,7 +24,7 @@ export default function PasswordResetRequest() {
 
     return (
         <section id="password-reset-request">
-            <h2>Request Password Reset</h2>
+            <h2>Reset Password</h2>
             {success ? (
                 <p className="success">{success}</p>
             ) : (

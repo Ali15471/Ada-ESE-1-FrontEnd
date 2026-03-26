@@ -18,7 +18,12 @@ export default function Register() {
             await register(username, email, password);
             navigate("/login");
         } catch (err) {
-            setError("Registration failed. Please try again.");
+            const data = err.response?.data;
+            if (data) {
+                setError(Object.values(data).flat());
+            } else {
+                setError(["Registration failed. Please try again."]);
+            }
         } finally {
             setLoading(false);
         }
@@ -64,7 +69,7 @@ export default function Register() {
                     </button>
                 </form>
                 <p>Already have an account? <Link to="/login">Login here</Link></p>
-                {error && <p role="alert">{error}</p>}
+                {error && error.map((msg, i) => <p key={i} role="alert">{msg}</p>)}
             </div>
         </section>
     );
