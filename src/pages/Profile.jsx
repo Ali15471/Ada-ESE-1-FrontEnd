@@ -3,6 +3,26 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import api from "../api/axios.js";
 
+async function resizeImage(file, maxWidth = 300, maxHeight = 300) {
+    return new Promise((resolve) => {
+        const img = document.createElement("img");
+        const canvas = document.createElement("canvas");
+        img.onload = () => {
+            let { width, height } = img;
+            if (width > height) {
+                if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
+            } else {
+                if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+            canvas.toBlob(resolve, "image/jpeg", 1);
+        };
+        img.src = URL.createObjectURL(file);
+    });
+}
+
 export default function Profile() {
     const [userInfo, setUserInfo] = useState(null);
     const [draftPosts, setDraftPosts] = useState([]);
@@ -43,14 +63,19 @@ export default function Profile() {
             const formData = new FormData();
             formData.append("username", username);
             formData.append("bio", bio);
-            if (profilePicture instanceof File) {
+            if (profilePicture instanceof Blob) {
                 formData.append("profile_picture", profilePicture);
             }
-            await api.patch("/api/profile/", formData, {
-                headers: { "Content-Type": "multipart/form-data" }
+            const res = await api.patch(
+                "/api/profile/", formData, {
+                headers: { "Content-Type": "multipart/form-data"
+                }
             });
+            const newPfpUrl = res.data.profile_picture;
+            setProfilePicture(newPfpUrl); // To be replaced with url
+            localStorage.setItem('profile_picture', newPfpUrl || '');
             localStorage.setItem('username', username);
-            updateUser({ username });
+            updateUser({ username, profile_picture: newPfpUrl });
             setSuccessMessage("Profile updated successfully!");
         } catch (err) {
             setError("Failed to update profile. Please try again.");
@@ -61,10 +86,21 @@ export default function Profile() {
 
     if (loading) return <p>Loading profile...</p>;
 
+    const previewUrl = profilePicture instanceof Blob
+    ? URL.createObjectURL(profilePicture)
+    : profilePicture || null;
+
+    // In JSX:
+    
+
     return (
         <section id="profile">
             <div className="container">
                 <h2>My Profile</h2>
+                {previewUrl
+                ? <img src={previewUrl} alt="Profile picture" />
+                : <div>No photo</div>  // swap for a real placeholder later
+                }
                 {error && <p role="alert">{error}</p>}
                 {successMessage && <p role="alert">{successMessage}</p>}
                 <form onSubmit={handleSave}>
@@ -92,7 +128,12 @@ export default function Profile() {
                             type="file"
                             id="profilePicture"
                             accept="image/*"
-                            onChange={e => setProfilePicture(e.target.files[0])}
+                            onChange={async e => {
+                            const file = e.target.files[0];
+                            if (!file) return;
+                            const resized = await resizeImage(file);
+                            setProfilePicture(resized);
+                        }}
                         />
                     </div>
                     <button type="submit" disabled={saving}>
