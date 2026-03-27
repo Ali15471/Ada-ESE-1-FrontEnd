@@ -53,13 +53,14 @@ export default function Login() {
           <button type="button" onClick={() => setShowPassword((prev) => !prev)}>
             {showPassword ? "Hide" : "Show"} Password
           </button>
+          {error && <p role="alert">{error}</p>}
           <button type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <p>Don't have an account? <Link to="/register">Register here</Link></p>
         <p>Forgot your password?<Link to="/password-reset-request">Reset password</Link></p>
-        {error && <p role="alert">{error}</p>}
+        
       </div>
     </section>
   );
