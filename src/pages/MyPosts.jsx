@@ -13,9 +13,6 @@ export default function MyPosts() {
         async function fetchPosts() {
             try {
                 const response = await api.get("/api/posts/");
-                console.log("user.username:", user?.username);
-                console.log("post author_usernames:", response.data.map(p => p.author_username));
-
                 setPosts(response.data.filter(p => p.author_username === user?.username));
             } catch (err) {
                 setError("Failed to load posts. Please try again later.");

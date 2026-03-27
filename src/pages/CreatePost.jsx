@@ -26,7 +26,7 @@ export default function CreatePost() {
             <div className="container">
                 <h2>Create New Post</h2>
                 {error && <p role="alert">{error}</p>}
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={e => e.preventDefault()}>
                     <div>
                         <label htmlFor="title">Title:</label>
                         <input
