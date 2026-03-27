@@ -19,7 +19,7 @@ export default function Login() {
       navigate("/");
     } catch (err) {
       const data = err.response?.data;
-      setError(data?.detail || "Invalid username or password.");
+      setError("Invalid username or password.");
     } finally {
       setLoading(false);
     }
