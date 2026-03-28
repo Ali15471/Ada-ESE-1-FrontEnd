@@ -79,7 +79,7 @@ export default function Profile() {
                 }
             });
             const newPfpUrl = res.data.profile_picture;
-            setProfilePicture(newPfpUrl); // To be replaced with url
+            setProfilePicture(newPfpUrl); 
             setSavedUsername(username);
             setSavedBio(bio);
             setSavedProfilePicture(newPfpUrl);
@@ -118,7 +118,7 @@ export default function Profile() {
                 <h2>My Profile</h2>
                 {previewUrl
                 ? <img src={previewUrl} alt="Profile picture" />
-                : <div>No photo</div>  // swap for a real placeholder later
+                : <div>No photo</div>  
                 }
                 {error && <p role="alert">{error}</p>}
                 {successMessage && <p role="alert">{successMessage}</p>}

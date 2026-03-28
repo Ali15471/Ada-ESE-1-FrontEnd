@@ -11,9 +11,22 @@ A React single-page application for a blogging platform. This is the presentatio
 
 ## Architecture
 
-This frontend sits in front of the Django REST API and never connects to the database directly. All data is fetched and mutated through the API middleware layer.
+This frontend sits in front of the Django REST API and never connects to the database
+directly. All data is fetched and mutated through the API middleware layer.
 
-Authentication state is managed globally via React Context (`AuthContext`), with JWT access and refresh tokens stored in `localStorage`. An Axios interceptor automatically attaches the token to every request and silently refreshes it on a 401 response.
+Authentication state is managed globally via React Context (`AuthContext`), with JWT access
+and refresh tokens stored in `localStorage`. A single `useAuth` hook exposes this state to
+all components, avoiding prop drilling.
+
+An Axios interceptor handles token management transparently:
+- **Request interceptor** — attaches the `Authorization: Bearer <token>` header to every
+  outgoing request automatically
+- **Response interceptor** — on a 401 response, silently requests a new access token using
+  the refresh token and retries the original request; if the refresh also fails, the user
+  is redirected to `/login`
+
+This means components never handle token logic directly — they call the API and the
+interceptor manages auth transparently.
 
 ## Technical Decisions
 
@@ -77,7 +90,10 @@ See .env.example for reference. If not set, defaults to http://127.0.0.1:8000.
 
 ## Testing
 
-Frontend unit tests are not currently implemented. API integration is validated through the backend test suite — see the backend repository for test coverage details.
+Frontend unit tests are not currently implemented. All API endpoints are validated through
+the backend test suite, which achieves 93% coverage across authentication, posts, and
+comments — including success paths, authorisation rules, and edge cases. See the backend
+repository for the full test suite and coverage report.
 
 ## Deployment
 
