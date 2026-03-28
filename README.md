@@ -91,7 +91,7 @@ See .env.example for reference. If not set, defaults to http://127.0.0.1:8000.
 ## Testing
 
 Frontend unit tests are not currently implemented. All API endpoints are validated through
-the backend test suite, which achieves 93% coverage across authentication, posts, and
+the backend test suite, which achieves 90%+ coverage across authentication, posts, and
 comments — including success paths, authorisation rules, and edge cases. See the backend
 repository for the full test suite and coverage report.
 
