@@ -114,6 +114,16 @@ Backend repository: https://github.com/Ali15471/Ada-ESE-1-BackEnd
 - Protected routes redirect unauthenticated users to `/login` before any authenticated content renders
 - Passwords never stored or logged client-side
 
-## AI Usage
-Claude Code (Anthropic) was used to assist with debugging, code review, and deployment configuration. All code was reviewed, understood, and integrated manually.
+## AI Declaration
 
+**Tool used:** Claude Code (Anthropic)
+
+Claude Code was used in the following specific ways during development:
+
+- **Axios interceptor logic** — used to discuss and refine the token refresh interceptor pattern (queuing failed requests during token refresh); the logic was reviewed, understood, and adapted to fit this project's auth flow
+- **Client-side image resizing** — used to explain the `Canvas` API approach for resizing images before upload; the implementation was written and tested manually
+- **Deployment configuration** — assisted with the Render static site setup and the `_redirects` file needed for client-side routing
+- **Debugging** — used to diagnose issues with protected route behaviour and token persistence across page refreshes; fixes were understood and applied manually
+- **README drafting** — used to help structure and draft this documentation, which was reviewed and edited to accurately reflect the actual implementation
+
+All core application logic — routing, context, components, and API integration — was written independently. AI-assisted content was critically evaluated before inclusion. Any code generated or suggested by AI was read, understood, and manually integrated; nothing was accepted without review.
